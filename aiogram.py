@@ -1,19 +1,27 @@
 import asyncio
-import logging
+from os import getenv
 
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
+from aiogram.filters import Command
+from aiogram.types import Message
 
-TOKEN = ""
+TOKEN = getenv("BOT_TOKEN")
 
 dp = Dispatcher()
 
-@dp.message()
-async def echo_handler(message: types.Message) -> None:
-    ...
-  
+
+# Command handler
+@dp.message(Command("start"))
+async def command_start_handler(message: Message) -> None:
+    await message.answer("Hello! I'm a bot created with aiogram.")
+
+
+# Run the bot
 async def main() -> None:
-    bot = Bot(TOKEN)
+    bot = Bot(token=TOKEN)
     await dp.start_polling(bot)
 
-logging.basicConfig(level=logging.INFO)
-asyncio.run(main())
+
+if __name__ == "__main__":
+    asyncio.run(main())
+          
